@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block content %}
+    {% if pomadoro %}
+        <div id="active_pomadoro" style="display: block">
+            {{pomadoro.task}}
+            <span id="minutes">{{pomadoro.minutes}}</span>
+            <span id="seconds">{{pomadoro.seconds}}</span>
+            <script type="text/javascript">setInterval('count()', 1000);</script>
+            <input type="button" value="Squash pomadoro" onclick="squash_pomadoro();"/>
+        </div>
+    {% endif %}
+
+    <div id="inactive_pomadoro"
+    {% if pomadoro %}
+        style="display: none">
+    {% else %}
+        style="display: block">
+    {% endif %}
+        <input type="select" value="Start pomadoro" onclick="start_pomadoro();"/>
+        Task you are working on:
+        <select id="task">
+            <option></option>
+        </select>
+    </div>
+
+    {% for old_pomadoro in old_pomadoros %}
+        {{old_pomadoro.task}}
+        {{old_pomadoro.done}}
+    {% endfor %}
+
+    Available tasks:
+    {% for task in available_tasks %}
+        {{ task.name }} {{ task.used_pomadoros }} {{ task.pomadoros_left }}
+    {% endfor %}
+{% endblock %}
